@@ -1,0 +1,25 @@
+<%if !@movies%>
+<h1>New search</h1>
+<form>
+ <input name=q <%= @q %> >
+ <button type=”submit”>Buscar</button>
+</form>
+<%else%>
+    <div id="error_explanation">
+      <h2>Results to <%=@q%></h2>
+      <ul>
+      <% @movies.each do |movie| %>
+        <li><%= movie.tittle %></li>
+        <img src="<%=movie.poster%>" style="max-width:50%;">
+        <%if !movie.id%>
+        <%= link_to 'Start a discussion', create_movie_path(:tittle => "#{movie.tittle}", :poster =>"#{movie.poster}", :year =>"#{movie.year}"), method: :post %>
+        <%else%>
+        <%= link_to 'discussion', "/posts/new/#{movie.id}", method: :get %>
+        <% movie.posts.each do |post|%>
+          <h6><%=post.user%>.<h3><%=post.comment%>
+        <%end%>
+        <%end%>
+      <% end %>
+      </ul>
+    </div>
+<%end%>
